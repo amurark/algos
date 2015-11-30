@@ -1,0 +1,49 @@
+class MatrixChainRecursive {
+	int[] p;
+	long[][] m;
+	int count;
+	long sTime;
+	long fTime;
+	public MatrixChainRecursive(int[] p) {
+		this.p = p;
+		this.m = new long[p.length][p.length];
+		this.count = 0;
+		this.fTime = 0;
+		this.sTime = System.nanoTime();
+	}
+	
+	public long getResult(int[] p, int i, int j) {
+		
+		this.count++;
+		if(i == j)
+		{
+			return 0;
+		}
+		m[i][j] = Long.MAX_VALUE;
+		for (int k =i; k < j; k++)
+		{
+			long q = getResult(p, i, k) + getResult(p, k+1, j) + (p[i]*p[k+1]*p[j+1]);
+
+			if(q<m[i][j])
+			{
+				m[i][j] = q;
+			}
+		}
+		this.fTime = System.nanoTime();
+		return m[i][j];
+	}
+	
+	public void showResult()
+	{
+		System.out.println("Matrix chain multiplication using Recursion, total scalar multiplications: "+this.m[0][this.p.length-2]);
+//		for(int i = 0; i < this.p.length-1; i++) {
+//			for(int j = 0; j < this.p.length-1; j++) {
+//				System.out.print(this.m[i][j]+"\t");
+//			}
+//			System.out.print("\n");
+//		}
+		System.out.println("Matrix multiplication using Recursion, total recurrences: "+this.count);
+		System.out.println("Matrix multiplication using Recursion, total time taken: "+(this.fTime-this.sTime));
+		System.out.println("-------------------------------------------------------------------------------------\n");
+	}
+}

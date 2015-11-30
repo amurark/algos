@@ -1,0 +1,74 @@
+
+public class MatrixChainMemoization {
+	int[] p;
+	long[][] m;
+	int count;
+	long sTime;
+	long fTime;
+	public MatrixChainMemoization(int[] p)
+	{
+		this.p = p;
+		this.count = 0;
+		this.sTime = 0;
+		this.fTime = 0;
+	}
+	public long MemoizedMatrixChain(int[] p) {
+		int n = p.length - 1;
+		this.m = new long[n][n];
+		this.sTime = System.nanoTime();
+		for( int i = 0; i < n; i++)
+		{
+			for(int j = 0; j < n; j++)
+			{
+				this.m[i][j] = Long.MAX_VALUE;
+			}
+		}
+		return lookupChain(this.m,p,0,n-1);
+	}
+	
+	public long lookupChain(long[][] m, int[] p, int i, int j)
+	{
+		count++;
+		if(m[i][j] < Long.MAX_VALUE)
+		{
+			return m[i][j];
+		}
+		if( i == j)
+		{
+			m[i][j] = 0;
+		}
+		else 
+		{
+			for(int k = i; k < j; k++)
+			{
+				long q = lookupChain(m, p, i, k)+lookupChain(m, p, k+1, j)+(p[i]*p[k+1]*p[j+1]);
+				if (q < m[i][j])
+				{
+					m[i][j] = q;
+				}
+			}
+		}
+		this.fTime = System.nanoTime();
+		return m[i][j];
+	}
+	
+	public void showResult()
+	{
+		System.out.println("Matrix chain multiplication using Memoization, total scalar multiplications: "+this.m[0][this.p.length-2]);
+//		for(int i = 0; i < this.p.length-1; i++) {
+//			for(int j = 0; j < this.p.length-1; j++) {
+//				if(this.m[i][j] == Long.MAX_VALUE)
+//				{
+//					System.out.print("0\t");
+//				}
+//				else
+//				{
+//					System.out.print(this.m[i][j]+"\t");
+//				}
+//			}
+//			System.out.print("\n");
+//		}
+		System.out.println("Matrix chain multiplication using Memoization, total recurrences:  "+this.count);
+		System.out.println("Matrix chain multiplication using Memoization, total time taken:  "+(this.fTime - sTime));
+	}
+}

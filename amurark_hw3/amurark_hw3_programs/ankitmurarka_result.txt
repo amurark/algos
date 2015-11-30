@@ -1,0 +1,19 @@
+
+public class Result
+{
+	long[][] m;
+	long[][] s;
+	public Result(long[][] m, long[][] s)
+	{
+		this.m = m;
+		this.s = s;
+	}
+	public long[][] getM()
+	{
+		return m;
+	}
+	public long[][] getS()
+	{
+		return s;
+	}
+}
